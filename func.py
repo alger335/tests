@@ -44,78 +44,79 @@ q - выход
 print(HELP)
 
 
-def people(documents):
+def people(inp_number):
     """p – people – команда, которая спросит номер документа и выведет имя человека, которому он принадлежит
     """
-    inp_number = str(input('Введите номер документа: '))
     for document in documents:
         if inp_number == document["number"]:
-            response = f'\nВладелец документа: {document["name"]}'
+            response = document["name"]
             return response
         else:
             response = 'Ошибка! Документ с таким номером отсутствует!'
     return response
 
 
-def shelf(directories):
+def shelf(inp_number):
     """s – shelf – команда, которая спросит номер документа и выведет номер полки, на которой он находится
     """
-    inp_number = input('Введите номер документа: ')
     for key, value in directories.items():
         if inp_number in value:
-            response = f'\nНомер полки: {key}'
+            response = key
             return response
         else:
             response = 'Ошибка! Документ с таким номером отсутствует!'
     return response
 
 
-def lst_docs(documents):
+def lst_docs():
     """l– list – команда, которая выведет список всех документов в формате passport "2207 876234" "Василий Гупкин"
     """
     for document in documents:
         print(f'{document["type"]} "{document["number"]}" "{document["name"]}"')
 
 
-def add_doc(documents, directories):
-    """a – add – команда, которая добавит новый документ в каталог и в перечень полок, спросив его номер, тип, имя владельца и номер полки, на котором он будет храниться. Корректно обработайте ситуацию, когда пользователь будет пытаться добавить документ на несуществующую полку.
+def add_doc(doc_type, doc_num, doc_own, shelf_num):
+    """a – add – команда, которая добавит новый документ в каталог и в перечень полок, спросив его номер, тип, имя
+    владельца и номер полки, на котором он будет храниться. Корректно обработайте ситуацию, когда пользователь будет
+    пытаться добавить документ на несуществующую полку.
     """
-    doc_dict = {"type": str(input('тип документа: ')), "number": str(input('номер документа: ')),
-                "name": str(input('имя владельца: '))}
-    shelf_num = str(input('номер полки: '))
+    doc_dict = {"type": doc_type, "number": doc_num,
+                "name": doc_own}
     if shelf_num in directories.keys():
         directories[shelf_num].append(doc_dict["number"])
         documents.append(doc_dict)
-        print(f'\nДокумент добавлен на полку {shelf_num}')
+        return shelf_num
+        # print(f'\nДокумент добавлен на полку {shelf_num}')
     else:
-        print('Неправильный номер полки!')
+        print('Нет такой полки!')
+        shelf_add = str(input('Добавить новую полку? y/n: '))
+        if shelf_add == 'n':
+            print('Отмена')
+        elif shelf_add == 'y':
+            add_shelf(shelf_num)
+            directories[shelf_num].append(doc_dict["number"])
+            documents.append(doc_dict)
+            print(f'\nДокумент добавлен на полку {shelf_num}')
 
 
-def del_doc(documents, directories):
+def del_doc(doc_num):
     """ d – delete – команда, которая спросит номер документа и удалит его из каталога и из перечня полок.
     """
-    for document in documents:
-        print(f'{document["type"]} "{document["number"]}" "{document["name"]}"')
-    doc_num = str(input('\nВедите номер документа для удаления: '))
     for id, document in enumerate(documents):
         if doc_num == document["number"]:
             for key, value in directories.items():
                 if doc_num in value:
                     directories[key].remove(doc_num)
             documents.pop(id)
-            response = f'\nДокумент № {doc_num} удален!'
-            return response
+            response = True
         else:
-            response = '\nОшибка! Документ с таким номером отсутствует!'
+            response = False
     return response
 
 
-def move_doc(directories):
+def move_doc(doc_num, shelf_num):
     """m – move – команда, которая спросит номер документа и целевую полку и переместит его с текущей полки на целевую.
     """
-    print(f'\n{directories}')
-    doc_num = str(input('Введите номер документа: '))
-    shelf_num = str(input('Введите номер целоевой полки: '))
     for key, value in directories.items():
         if shelf_num in directories.keys():
             if doc_num in value:
@@ -130,43 +131,12 @@ def move_doc(directories):
     return response
 
 
-def add_shelf(directories):
-    """as – add shelf – команда, которая спросит номер новой полки и добавит ее в перечень. Предусмотрите случай, когда пользователь добавляет полку, которая уже существует.
+def add_shelf(shelf_num):
+    """as – add shelf – команда, которая спросит номер новой полки и добавит ее в перечень. Предусмотрите случай, когда
+    пользователь добавляет полку, которая уже существует.
     """
-    print(f'\n{directories}')
-    shelf_num = str(input('\nВведите номер новой полки: '))
     if shelf_num not in directories.keys():
         directories.update({shelf_num: []})
         print(f'\nПолка {shelf_num} добавлена.')
     else:
         print(f'\nОшибка! Полка {shelf_num} уже существует')
-    print(f'\n{directories}')
-
-
-def main(documents, directories, HELP):
-    while True:
-        command = input('\nВведите команду: ')
-        if command == 'h':
-            print(HELP)
-        elif command == 'p':
-            print(people(documents))
-        elif command == 's':
-            print(shelf(directories))
-        elif command == 'l':
-            lst_docs(documents)
-        elif command == 'a':
-            add_doc(documents, directories)
-        elif command == 'd':
-            print(del_doc(documents, directories))
-        elif command == 'm':
-            print(move_doc(directories))
-        elif command == 'as':
-            add_shelf(directories)
-        elif command == 'q':
-            break
-        else:
-            print('Неправильная команда!')
-            break
-
-
-main(documents, directories, HELP)
