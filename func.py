@@ -20,20 +20,21 @@
 documents = [
     {"type": "passport", "number": "2207 876234", "name": "Василий Гупкин"},
     {"type": "invoice", "number": "11-2", "name": "Геннадий Покемонов"},
-    {"type": "insurance", "number": "10006", "name": "Аристарх Павлов"}
+    {"type": "insurance", "number": "10006", "name": "Аристарх Павлов"},
+    {"type": "driver license", "number": "52465465", "name": "Анатолий Вассерман"}
 ]
 
 directories = {
     '1': ['2207 876234', '11-2'],
     '2': ['10006'],
-    '3': []
+    '3': ['52465465']
 }
 
 HELP = '''
 h - список команд.
 p – people – команда, которая спросит номер документа и выведет имя человека, которому он принадлежит;
 s – shelf – команда, которая спросит номер документа и выведет номер полки, на которой он находится;
-l– list – команда, которая выведет список всех документов
+l – list – команда, которая выведет список всех документов
 a – add – команда, которая добавит новый документ в каталог и в перечень полок, спросив его номер, тип, имя владельца и
 номер полки, на котором он будет храниться.
 d – delete – команда, которая спросит номер документа и удалит его из каталога и из перечня полок. 
@@ -52,7 +53,7 @@ def people(inp_number):
             response = document["name"]
             return response
         else:
-            response = 'Ошибка! Документ с таким номером отсутствует!'
+            response = False
     return response
 
 
@@ -64,7 +65,7 @@ def shelf(inp_number):
             response = key
             return response
         else:
-            response = 'Ошибка! Документ с таким номером отсутствует!'
+            response = False
     return response
 
 
@@ -86,7 +87,6 @@ def add_doc(doc_type, doc_num, doc_own, shelf_num):
         directories[shelf_num].append(doc_dict["number"])
         documents.append(doc_dict)
         return shelf_num
-        # print(f'\nДокумент добавлен на полку {shelf_num}')
     else:
         print('Нет такой полки!')
         shelf_add = str(input('Добавить новую полку? y/n: '))
@@ -122,12 +122,12 @@ def move_doc(doc_num, shelf_num):
             if doc_num in value:
                 directories[key].remove(doc_num)
                 directories[shelf_num].append(doc_num)
-                response = f'\nДокумент № {doc_num} перемещен на полку {shelf_num}.'
+                response = True
                 return response
             else:
-                response = '\nОшибка! Документ с таким номером отсутствует!'
+                response = False
         else:
-            response = '\nОшибка! Нет такой полки!'
+            response = False
     return response
 
 
@@ -137,6 +137,6 @@ def add_shelf(shelf_num):
     """
     if shelf_num not in directories.keys():
         directories.update({shelf_num: []})
-        print(f'\nПолка {shelf_num} добавлена.')
+        return True
     else:
-        print(f'\nОшибка! Полка {shelf_num} уже существует')
+        return False

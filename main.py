@@ -9,11 +9,17 @@ def main():
         elif command == 'p':
             inp_number = str(input('Введите номер документа: '))
             owner = people(inp_number)
-            print(f'\nВладелец документа: {owner}')
+            if not owner:
+                print('Ошибка')
+            else:
+                print(f'\nВладелец документа: {owner}')
         elif command == 's':
             inp_number = str(input('Введите номер документа: '))
             shelf_num = shelf(inp_number)
-            print(f'\nНомер полки: {shelf_num}')
+            if not shelf_num:
+                print('Ошибка!')
+            else:
+                print(f'\nНомер полки: {shelf_num}')
         elif command == 'l':
             lst_docs()
         elif command == 'a':
@@ -36,11 +42,19 @@ def main():
             print(f'\n{directories}')
             doc_num = str(input('Введите номер документа: '))
             shelf_num = str(input('Введите номер целевой полки: '))
-            print(move_doc(doc_num, shelf_num))
+            doc_moved = move_doc(doc_num, shelf_num)
+            if doc_moved:
+                print(f'Документ {doc_num} перемещен на полку {shelf_num}!')
+            else:
+                print(f'\nОшибка!')
         elif command == 'as':
             print(f'\n{directories}')
             shelf_num = str(input('\nВведите номер новой полки: '))
-            add_shelf(shelf_num)
+            if add_shelf(shelf_num):
+                print(f'\nПолка {shelf_num} добавлена.')
+            else:
+                print(f'\nОшибка! Полка {shelf_num} уже существует')
+
         elif command == 'q':
             break
         else:
