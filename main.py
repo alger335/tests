@@ -21,7 +21,8 @@ def main():
             else:
                 print(f'\nНомер полки: {shelf_num}')
         elif command == 'l':
-            lst_docs()
+            for document in lst_docs():
+                print(f'{document["type"]} "{document["number"]}" "{document["name"]}"')
         elif command == 'a':
             doc_type = str(input('Введите тип документа: '))
             doc_num = str(input('Введите номер документа: '))
@@ -34,6 +35,7 @@ def main():
                 print(f'{document["type"]} "{document["number"]}" "{document["name"]}"')
             doc_num = str(input('\nВедите номер документа для удаления: '))
             doc_deleted = del_doc(doc_num)
+            print(doc_deleted)
             if doc_deleted:
                 print(f'\nДокумент № {doc_num} удален!')
             else:

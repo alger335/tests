@@ -10,8 +10,8 @@ class TestShelfAppUnitTest(unittest.TestCase):
     def test_shelf(self):
         self.assertEqual("2", shelf("10006"))
 
-    # def test_lst_docs(self):
-    #     self.assertEqual("1", shelf("11-2"))
+    def test_lst_docs(self):
+        self.assertEqual(documents, lst_docs())
 
     def test_add_doc(self):
         self.assertEqual("3", add_doc("test_type", "1234", "Виталий Иванов", "3"))

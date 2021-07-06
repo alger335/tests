@@ -72,8 +72,8 @@ def shelf(inp_number):
 def lst_docs():
     """l– list – команда, которая выведет список всех документов в формате passport "2207 876234" "Василий Гупкин"
     """
-    for document in documents:
-        print(f'{document["type"]} "{document["number"]}" "{document["name"]}"')
+    return documents
+
 
 
 def add_doc(doc_type, doc_num, doc_own, shelf_num):
