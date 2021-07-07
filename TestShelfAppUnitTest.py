@@ -1,5 +1,4 @@
 from func import *
-# from test_yandex import *
 import unittest
 
 
@@ -28,16 +27,3 @@ class TestShelfAppUnitTest(unittest.TestCase):
     def test_add_shelf(self):
         self.assertEqual(True, add_shelf("6"))
         self.assertEqual(False, add_shelf("2"))
-
-    # def test_yandex_success(self):
-    #     self.assertEqual(201, ya.upload_folder_to_disk('test'))
-    # def test_yandex_check(self):
-    #     json = ya.get_files_list()
-    #     json_data = json['_embedded']['items']
-    #     list = []
-    #     for dict in json_data:
-    #         for key in dict.items():
-    #             for item in key:
-    #                 list.append(item)
-    #     print(list)
-    #     self.assertIn('papka19', list)
